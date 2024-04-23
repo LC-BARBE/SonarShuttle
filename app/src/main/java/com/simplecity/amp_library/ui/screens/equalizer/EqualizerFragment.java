@@ -133,7 +133,7 @@ public class EqualizerFragment extends BaseFragment implements
             if (getActivity().getPackageManager().resolveActivity(openDSP, 0) != null) {
                 startActivityForResult(openDSP, 1000);
             }
-            break;
+            return false;
         }
         return true;
     }

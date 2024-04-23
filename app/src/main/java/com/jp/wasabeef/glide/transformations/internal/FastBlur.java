@@ -18,7 +18,7 @@ import android.graphics.Bitmap;
  * limitations under the License.
  */
 
-public class FastBlur {
+protected class FastBlur {
 
     public static Bitmap blur(Bitmap sentBitmap, int radius, boolean canReuseInBitmap) {
 
@@ -93,7 +93,9 @@ public class FastBlur {
         int[] sir;
         int rbs;
         int r1 = radius + 1;
-        int routsum, goutsum, boutsum;
+        int routsum;
+        int goutsum;
+        int boutsum;
         int rinsum, ginsum, binsum;
 
         for (y = 0; y < h; y++) {

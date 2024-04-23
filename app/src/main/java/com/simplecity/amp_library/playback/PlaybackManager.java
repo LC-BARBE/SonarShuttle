@@ -55,7 +55,7 @@ public class PlaybackManager implements Playback.Callbacks {
 
     private SettingsManager settingsManager;
 
-    private boolean playOnQueueReload = false;
+    private boolean playOnQueueReload;
 
     @NonNull
     Playback playback;
@@ -88,6 +88,8 @@ public class PlaybackManager implements Playback.Callbacks {
 
         this.settingsManager = settingsManager;
 
+        this.setPlayOnQueueReload();
+
         mediaSessionManager = new MediaSessionManager(
                 context, queueManager,
                 this,
@@ -112,6 +114,10 @@ public class PlaybackManager implements Playback.Callbacks {
                         }
                     }
                 }, throwable -> LogUtils.logException(TAG, "Error consuming SleepTimer observable", throwable)));
+    }
+
+    protected void setPlayOnQueueReload() {
+        this.playOnQueueReload = false;
     }
 
     @NonNull

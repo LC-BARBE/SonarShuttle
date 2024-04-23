@@ -9,9 +9,7 @@ public class Size {
         this.setWithAndHeigtInObject(width, height);
     }
 
-    private setWithAndHeigtInObject(int width, int height) {
-        return new Object({width,height});
-    }
+    private setWithAndHeigtInObject(int width, int height) {return {width,height};}
 
     @Override
     public boolean equals(Object o) {
