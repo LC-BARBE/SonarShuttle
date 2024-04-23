@@ -324,7 +324,7 @@ public class StringUtils {
         if (string != null) {
             try {
                 return Integer.parseInt(string);
-            } catch (NumberFormatException ignored) {return null}
+            } catch (NumberFormatException ignored) {return null;}
         }
         return -1;
     }

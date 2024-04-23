@@ -190,6 +190,7 @@ public class TaggerUtils {
             if (destination != null) {
                 destination.close();
             }
+            source.close();
         }
     }
 

@@ -90,18 +90,17 @@ public class HttpServer {
             if (uri.contains("audio")) {
                 try {
                     File file = new File(audioFileToServe);
-
                     Map<String, String> headers = session.getHeaders();
                     String range = null;
-                    for (String key : headers.keySet()) {
-                        if ("range".equals(key)) {
-                            range = headers.get(key);
+                    for (Map.Entry<String, String> entry : headers.entrySet()) {
+                        if ("range".equals(entry.getKey())) {
+                            range = entry.getValue();
                         }
                     }
 
                     if (range == null) {
                         range = "bytes=0-";
-                        session.getHeaders().put("range", range);
+                        headers.put("range", range);
                     }
 
                     long start;
@@ -126,7 +125,9 @@ public class HttpServer {
                         long contentLength = end - start + 1;
                         cleanupAudioStream();
                         audioInputStream = new FileInputStream(file);
-                        audioInputStream.skip(start);
+                        if (skippedBytes != start) {
+                            audioInputStream.skip(start);
+                        }
                         Response response = newFixedLengthResponse(Response.Status.PARTIAL_CONTENT, getMimeType(audioFileToServe), audioInputStream, contentLength);
                         response.addHeader("Content-Length", contentLength + "");
                         response.addHeader("Content-Range", "bytes " + start + "-" + end + "/" + fileLength);
@@ -157,8 +158,7 @@ public class HttpServer {
         if (audioInputStream != null) {
             try {
                 audioInputStream.close();
-            } catch (IOException ignored) {
-            }
+            } catch (IOException ignored){};
         }
     }
 
@@ -166,11 +166,9 @@ public class HttpServer {
         if (imageInputStream != null) {
             try {
                 imageInputStream.close();
-            } catch (IOException ignored) {
-            }
+            } catch (IOException ignored){};
         }
     }
-
     private final Map<String, String> MIME_TYPES = new HashMap<String, String>() {{
         put("css", "text/css");
         put("htm", "text/html");
@@ -199,6 +197,7 @@ public class HttpServer {
         put("exe", "application/octet-stream");
         put("class", "application/octet-stream");
     }};
+
 
     String getMimeType(String filePath) {
         return MIME_TYPES.get(filePath.substring(filePath.lastIndexOf(".") + 1));

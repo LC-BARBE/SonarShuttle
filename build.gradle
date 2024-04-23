@@ -1,5 +1,18 @@
 import dependencies.Dependencies
 
+buildscript {
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath Dependencies.Plugins.android
+        classpath Dependencies.Plugins.gradleVersions
+        classpath Dependencies.Plugins.playServices
+        classpath Dependencies.Plugins.kotlin
+    }
+}
+
 plugins {
     id "org.sonarqube" version "4.4.1.3373"
 }
@@ -13,19 +26,6 @@ sonar {
 }
 
 apply plugin: Dependencies.BuildPlugins.gradleVersions
-
-buildscript {
-    repositories {
-        google()
-        jcenter()
-    }
-    dependencies {
-        classpath Dependencies.Plugins.android
-        classpath Dependencies.Plugins.gradleVersions
-        classpath Dependencies.Plugins.playServices
-        classpath Dependencies.Plugins.kotlin
-    }
-}
 
 allprojects {
     repositories {

@@ -61,7 +61,7 @@ public class Equalizer {
 
     public void releaseEffects() {
         Stream.of(mAudioSessions.values())
-                .filter(effectSet -> effectSet != null)
+                .filter(Objects::nonNull)
                 .forEach(EffectSet::release);
     }
 
@@ -334,7 +334,8 @@ public class Equalizer {
         try {
             session.enableEqualizer(globalEnabled);
             final int customPresetPos = session.getNumEqualizerPresets();
-            final int preset = Integer.valueOf(mPrefs.getString("audiofx.eq.preset", String.valueOf(customPresetPos)));
+            final int preset = Integer.parseInt(
+                    mPrefs.getString("audiofx.eq.preset", String.valueOf(customPresetPos)));
             final int bands = session.getNumEqualizerBands();
 
             /*

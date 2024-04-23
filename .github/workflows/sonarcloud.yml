@@ -18,15 +18,7 @@ jobs:
           java-version: '11'
 
       - name: SonarCloud Scan
-        run : |
-          ./sonar-scanner/bin/sonar-scanner.bat \
-          -Dsonar.organization="epsi-lcb-analyse-shuttle" \
-          -Dsonar.projectKey="epsi-lcb-analyse-shuttle_shuttle-init" \
-          -Dsonar.sources="./" \
-          -Dsonar.host.url="https://sonarcloud.io" \
-          -Dsonar.token="7df8b72f09d725edc7239995300299a640b622c5" \
-          -Dsonar.binaries="./" \
-          -Dsonar.java.binaries="./"
+        uses : sonarcloud-github-action@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}

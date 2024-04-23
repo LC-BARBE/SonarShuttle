@@ -91,7 +91,8 @@ public class MediaManager {
         analyticsManager.dropBreadcrumb(TAG, "shuffleAll()");
         setShuffleMode(QueueManager.ShuffleMode.ON);
         if (!songs.isEmpty()) {
-            playAll(songs, new Random().nextInt(songs.size()), false, onEmpty);
+            int randomPlayAll = new Random().nextInt(songs.size());
+            playAll(songs, randomPlayAll, false, onEmpty);
         }
     }
 

@@ -87,7 +87,7 @@ public class MusicService extends MediaBrowserServiceCompat {
 
     private MusicNotificationHelper notificationHelper;
 
-    private static NotificationStateHandler notificationStateHandler;
+    private NotificationStateHandler notificationStateHandler;
 
     private AlarmManager alarmManager;
 
@@ -292,11 +292,7 @@ public class MusicService extends MediaBrowserServiceCompat {
     public void onTaskRemoved(Intent rootIntent) {
         analyticsManager.dropBreadcrumb(TAG, "onTaskRemoved()");
 
-        // Fixme:
-        //  playbackManager.willResumePlayback() returns true even after we've manually paused.
-        //  This means we don't call stopSelf(), which in turn causes the service to act as if it has crashed, and will recreate itself unnecessarily.
-
-        if (!isPlaying() && !playbackManager.willResumePlayback()) {
+        if (!isPlaying() && !playbackManager.willResumePlayback() && !isPausedManually()) {
             analyticsManager.dropBreadcrumb(TAG, "stopSelf() called");
             stopSelf();
         }
