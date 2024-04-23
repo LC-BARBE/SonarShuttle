@@ -14,8 +14,6 @@ import java.util.regex.Pattern;
 
 public class StringUtils {
 
-    private static final String TAG = "StringUtils";
-
     private static StringBuilder sFormatBuilder = new StringBuilder();
 
     private static Formatter sFormatter = new Formatter(sFormatBuilder, Locale.getDefault());
@@ -37,7 +35,6 @@ public class StringUtils {
      */
     public static String makeTimeString(@NonNull Context context, long secs) {
         sFormatBuilder.setLength(0);
-        //return (secs < 0 ? "- " : "") + (Math.abs(secs) < 3600 ? makeShortTimeString(context, Math.abs(secs)) : makeLongTimeString(context, Math.abs(secs)));
         return Math.abs(secs) < 3600 ? makeShortTimeString(context, secs) : makeLongTimeString(context, secs);
     }
 
@@ -262,7 +259,7 @@ public class StringUtils {
         if (m == 0) {
             return 0D;
         }
-        final double j = ((m / first.length() + m / second.length() + (m - mtp[1]) / m)) / 3;
+        final double j = (m / first.length() + m / second.length() + (m - mtp[1]) / m) / 3;
         final double jw = j < 0.7D ? j : j + Math.min(DEFAULT_SCALING_FACTOR, 1D / mtp[3]) * mtp[2] * (1D - j);
         return Math.round(jw * 100.0D) / 100.0D;
     }
@@ -327,9 +324,7 @@ public class StringUtils {
         if (string != null) {
             try {
                 return Integer.parseInt(string);
-            } catch (NumberFormatException ignored) {
-
-            }
+            } catch (NumberFormatException ignored) {return null}
         }
         return -1;
     }

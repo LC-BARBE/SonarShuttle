@@ -74,7 +74,7 @@ public class ShuttleApplication extends DaggerApplication {
 
     private RefWatcher refWatcher;
 
-    public HashMap<String, UserSelectedArtwork> userSelectedArtwork = new HashMap<>();
+    protected HashMap<String, UserSelectedArtwork> userSelectedArtwork = new HashMap<>();
 
     private static Logger jaudioTaggerLogger1 = Logger.getLogger("org.jaudiotagger.audio");
     private static Logger jaudioTaggerLogger2 = Logger.getLogger("org.jaudiotagger");
@@ -102,12 +102,7 @@ public class ShuttleApplication extends DaggerApplication {
             return;
         }
 
-        // Todo: Remove for production builds. Useful for tracking down crashes in beta.
         RxDogTag.install();
-
-        if (BuildConfig.DEBUG) {
-            // enableStrictMode();
-        }
 
         refWatcher = LeakCanary.install(this);
         // workaround to fix InputMethodManager leak as suggested by LeakCanary lib
@@ -217,9 +212,7 @@ public class ShuttleApplication extends DaggerApplication {
     public String getVersion() {
         try {
             return getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-        } catch (PackageManager.NameNotFoundException | NullPointerException ignored) {
-
-        }
+        } catch (PackageManager.NameNotFoundException | NullPointerException ignored) {return "unknown";}
         return "unknown";
     }
 
@@ -295,8 +288,7 @@ public class ShuttleApplication extends DaggerApplication {
 
             try {
                 getContentResolver().delete(PlayCountTable.URI, selection.toString(), null);
-            } catch (IllegalArgumentException ignored) {
-            }
+            } catch (IllegalArgumentException ignored) {return null;}
         });
     }
 
@@ -371,13 +363,11 @@ public class ShuttleApplication extends DaggerApplication {
                         }
 
                 ).toList()
-                .doOnSuccess(contentProviderOperations -> {
-                    getContentResolver().applyBatch(MediaStore.AUTHORITY, new ArrayList<>(contentProviderOperations));
-                })
+                .doOnSuccess(contentProviderOperations -> getContentResolver().applyBatch(MediaStore.AUTHORITY, new ArrayList<>(contentProviderOperations)))
                 .flatMapCompletable(songs -> Completable.complete());
     }
 
-    private void enableStrictMode() {
+    void enableStrictMode() {
         StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
                 .detectAll()
                 .penaltyLog()
